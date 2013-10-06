@@ -1,0 +1,90 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "http://clojars.org/repo" }
+    }
+
+    dependencies {
+        classpath "de.kotka.gradle:gradle-plugin:1.1.0"
+    }
+}
+
+subprojects {
+    group = 'clojuresque'
+    version = '1.0.0-SNAPSHOT'
+
+    ext.kotka = [
+        repository:     "clojuresque/common",
+        wrapperVersion: "1.8"
+    ]
+
+    apply plugin: 'java'
+    apply plugin: 'kotka'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+project(':clojuresque-common') {
+    description = "A Clojure plugin for gradle (common)"
+
+    apply {
+        plugin 'groovy'
+    }
+
+    dependencies {
+        compile gradleApi()
+        compile localGroovy()
+
+        compile "de.kotka.gradle:gradle-utils:0.1.1"
+
+        testCompile('org.spockframework:spock-core:0.7-groovy-1.8') {
+            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        }
+    }
+
+    compileJava {
+        sourceCompatibility = "1.6"
+        targetCompatibility = "1.6"
+    }
+
+    compileGroovy {
+        sourceCompatibility = "1.6"
+        targetCompatibility = "1.6"
+    }
+
+    processResources {
+        inputs.property "version", {-> project.version}
+        from(sourceSets.main.resources.srcDirs) {
+            expand("version": project.version)
+        }
+    }
+}
+
+project(':clojuresque-common-runtime') {
+    description = "A Clojure plugin for gradle (common runtime files)"
+
+    configurations {
+        clojure
+    }
+
+    dependencies {
+        clojure 'org.clojure:clojure:1.5.1'
+    }
+
+    sourceSets.main {
+        compileClasspath =
+            compileClasspath.plus(project.configurations.clojure)
+    }
+
+    compileJava {
+        sourceCompatibility = "1.6"
+        targetCompatibility = "1.6"
+    }
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "1.8"
+}
