@@ -27,8 +27,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 public class ClojureCommonPlugin implements Plugin<Project> {
-    static final String CLOJURE_GROUP = "clojure development"
-
     void apply(Project project) {
         project.convention.plugins.clojure =
             new ClojurePluginConvention(project)
