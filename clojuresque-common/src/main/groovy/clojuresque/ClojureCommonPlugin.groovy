@@ -43,5 +43,13 @@ public class ClojureCommonPlugin implements Plugin<Project> {
                 description = "Development only dependencies"
             }
         }
+
+        def props = Util.properties("common")
+
+        project.dependencies {
+            clojuresque group: "clojuresque",
+                name: "clojuresque-common-runtime",
+                version: props.getProperty("clojuresque.common.version")
+        }
     }
 }
