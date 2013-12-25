@@ -83,6 +83,9 @@ project(':clojuresque-common-runtime') {
         targetCompatibility = "1.6"
     }
 
+    javadoc {
+        classpath = sourceSets.main.compileClasspath
+    }
 }
 
 task wrapper(type: Wrapper) {
