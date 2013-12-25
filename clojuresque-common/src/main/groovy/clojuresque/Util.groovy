@@ -26,7 +26,10 @@ package clojuresque
 import org.slf4j.Logger
 
 import us.bpsm.edn.Keyword
+import us.bpsm.edn.printer.Printers
 
+import java.io.ByteArrayInputStream
+import java.io.StringWriter
 import java.util.Properties
 
 class Util {
@@ -55,5 +58,13 @@ class Util {
             [ camelCaseToSnakeCase(k),
               (v instanceof Map) ? camelCaseToSnakeCase(v) : v ]
         }
+    }
+
+    static optionsToStream(options) {
+        def outWriter  = new StringWriter()
+        def ednPrinter = Printers.newPrinter(outWriter)
+        ednPrinter.printValue(camelCaseToSnakeCase(options))
+
+        new ByteArrayInputStream(outWriter.toString().getBytes("UTF-8"))
     }
 }
