@@ -20,7 +20,9 @@
 ; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ; THE SOFTWARE.
 
-(ns clojuresque.util)
+(ns clojuresque.util
+  (:require
+    [clojure.edn :as edn]))
 
 (defn namespace-of-file
   [file]
@@ -55,3 +57,12 @@
         hfn    (symbol (subs fully-qualified-sym (inc slash)))]
     (safe-require nspace)
     (ns-resolve nspace hfn)))
+
+(defmacro deftask
+  [task-name & fntail]
+  `(let [driver# (fn ~(symbol (str (name task-name) "-task-driver"))
+                   ~fntail)]
+     (defn ~task-name
+       []
+       (let [options# (edn/read (LineNumberingPushbackReader. *in*))]
+         (driver# options#)))))
