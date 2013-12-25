@@ -29,7 +29,7 @@
 
 (defn namespace-of-file
   [file]
-  (let [of-interest '#{ns clojure.core/ns}
+  (let [of-interest '#{ns clojure.core/ns in-ns clojure.core/in-ns}
         eof         (Object.)
         input       (LineNumberingPushbackReader. (io/reader file))
         in-seq      (take-while #(not (identical? % eof))
