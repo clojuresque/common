@@ -25,6 +25,8 @@ package clojuresque
 
 import org.slf4j.Logger
 
+import us.bpsm.edn.Keyword
+
 import java.util.Properties
 
 class Util {
@@ -40,5 +42,18 @@ class Util {
 
     static deprecationWarning(Logger l, String o, String n) {
         l.warn(String.format("'%s' is deprecated and will go away in a future version. Please use '%s' instead.", o, n))
+    }
+
+    static camelCaseToSnakeCase(String camelCase) {
+        Keyword.newKeyword(
+            camelCase.replaceAll("([A-Z])", "-\$1").toLowerCase()
+        )
+    }
+
+    static camelCaseToSnakeCase(Map camelCase) {
+        camelCase.collectEntries { k, v ->
+            [ camelCaseToSnakeCase(k),
+              (v instanceof Map) ? camelCaseToSnakeCase(v) : v ]
+        }
     }
 }
