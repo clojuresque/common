@@ -21,15 +21,17 @@
 ; THE SOFTWARE.
 
 (ns clojuresque.util
+  (:import
+    clojure.lang.LineNumberingPushbackReader)
   (:require
-    [clojure.edn :as edn]))
+    [clojure.edn :as edn]
+    [clojure.java.io :as io]))
 
 (defn namespace-of-file
   [file]
   (let [of-interest '#{ns clojure.core/ns}
         eof         (Object.)
-        input       (clojure.lang.LineNumberingPushbackReader.
-                      (java.io.FileReader. file))
+        input       (LineNumberingPushbackReader. (io/reader file))
         in-seq      (take-while #(not (identical? % eof))
                                 (repeatedly #(read input false eof)))
         candidate   (first
