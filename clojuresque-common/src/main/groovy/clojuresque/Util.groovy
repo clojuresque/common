@@ -67,4 +67,13 @@ class Util {
 
         new ByteArrayInputStream(outWriter.toString().getBytes("UTF-8"))
     }
+
+    static relativizePath(baseDir, absolutePath) {
+        def baseDirS      = baseDir.path
+        def absolutePathS = absolutePath.path
+
+        (absolutePathS.startsWith(baseDirS)) ?
+            absolutePathS.substring(baseDirS.length() + 1) :
+            null
+    }
 }
