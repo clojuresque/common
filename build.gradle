@@ -15,7 +15,7 @@ plugins {
 apply plugin: "de.kotka.project"
 
 kotka {
-    wrapperVersion = "2.3"
+    wrapperVersion = "2.7"
 }
 
 subprojects {
