@@ -19,7 +19,7 @@ kotka {
 }
 
 subprojects {
-    group = 'clojuresque'
+    group = 'de.kotka.clojuresque'
     version = '1.2.0-SNAPSHOT'
 
     kotka {
