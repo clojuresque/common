@@ -20,7 +20,6 @@ repositories {
     jcenter()
 }
 
-
 dependencies {
     compile gradleApi()
     compile localGroovy()
@@ -47,6 +46,7 @@ pluginBundle {
     website = 'https://bitbucket.org/clojuresque/common'
     vcsUrl = 'https://bitbucket.org/clojuresque/common'
     description = project.description
+    tags = ['clojure']
 
     plugins {
         commonPlugin {
