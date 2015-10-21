@@ -44,9 +44,8 @@ public class ClojureExec extends ConventionTask implements JavaExecSpec {
     public ClojureExec() {
         super();
 
-        FileCollection driverConf = getProject().getConfigurations().getByName("clojuresque");
         FileResolver fileResolver = ((ProjectInternal)getProject()).getFileResolver();
-        clojureExecAction = new ClojureExecAction(fileResolver, driverConf);
+        clojureExecAction = new ClojureExecAction(fileResolver);
     }
 
     @TaskAction

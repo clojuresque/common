@@ -44,8 +44,7 @@ class ClojurePluginConvention {
 
     public ExecResult clojureexec(Closure spec) {
         ClojureExecAction action = ConfigureUtil.configure(
-            new ClojureExecAction(project.fileResolver,
-                project.configurations.clojuresque),
+            new ClojureExecAction(project.fileResolver),
             spec
         )
         return action.execute()

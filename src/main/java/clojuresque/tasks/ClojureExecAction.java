@@ -35,37 +35,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClojureExecAction extends JavaExecHandleBuilder implements JavaExecAction {
-    FileCollection driverClasspath;
-
-    public ClojureExecAction(FileResolver fileResolver, FileCollection driver) {
+    public ClojureExecAction(FileResolver fileResolver) {
         super(fileResolver);
-        this.driverClasspath = driver;
-    }
-
-    @Override
-    public List<String> getAllJvmArgs() {
-        List<String> allArgs = super.getAllJvmArgs();
-        String driver = driverClasspath.getAsPath();
-
-        int pos = allArgs.indexOf("-cp") + 1;
-        if (pos > 0) {
-            String oldClasspath = allArgs.remove(pos);
-            allArgs.add(pos, oldClasspath + File.pathSeparator + driver);
-        } else {
-            allArgs.add("-cp");
-            allArgs.add(driver);
-        }
-
-        return allArgs;
+        setMain("-");
     }
 
     @Override
     public List<String> getAllArguments() {
         List<String> arguments = new ArrayList<String>();
         arguments.addAll(getAllJvmArgs());
-        arguments.add("clojuresque.Driver");
-        arguments.add(getMain());
+        arguments.add("clojure.main");
+
+        String m = getMain();
+        if ("-".equals(m)) {
+            arguments.add("-");
+        } else {
+            arguments.add("-m");
+            arguments.add(m);
+        }
+
         arguments.addAll(getArgs());
+
         return arguments;
     }
 
