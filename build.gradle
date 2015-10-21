@@ -12,6 +12,7 @@ description = "A Clojure plugin for gradle (common)"
 
 kotka {
     wrapperVersion = "2.7"
+    licenses   = [ "EUPL-1.1", "MIT" ]
     repository = "clojuresque/common"
     bintray    = [ repo: "clojuresque" ]
 }
