@@ -29,7 +29,12 @@ import us.bpsm.edn.Keyword
 import us.bpsm.edn.printer.Printers
 
 import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
+import java.io.SequenceInputStream
 import java.io.StringWriter
+import java.net.URL
 import java.util.Properties
 
 class Util {
@@ -75,5 +80,30 @@ class Util {
         (absolutePathS.startsWith(baseDirS)) ?
             absolutePathS.substring(baseDirS.length() + 1) :
             null
+    }
+
+    static toInputStream(InputStream stream) {
+        return stream
+    }
+
+    static toInputStream(String fileName) {
+        return new ByteArrayInputStream(fileName.getBytes("UTF-8"))
+    }
+
+    static toInputStream(File file) {
+        return new FileInputStream(file)
+    }
+
+    static toInputStream(URL resource) {
+        if ("file" == resource.protocol)
+            return toInputStream(new File(resource.file))
+        else
+            return resource.openStream()
+    }
+
+    static toInputStream(List l) {
+        return l.reverse().collect { toInputStream(it) }.inject { t, h ->
+            new SequenceInputStream(h, t)
+        }
     }
 }
