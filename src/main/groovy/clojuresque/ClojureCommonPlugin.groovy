@@ -32,24 +32,11 @@ public class ClojureCommonPlugin implements Plugin<Project> {
             new ClojurePluginConvention(project)
 
         project.configurations {
-            clojuresque {
-                transitive = false
-                visible = false
-                description = "Clojuresque internal configuration. Don't use!"
-            }
             development {
                 transitive = true
                 visible = false
                 description = "Development only dependencies"
             }
-        }
-
-        def props = Util.properties("common")
-
-        project.dependencies {
-            clojuresque group: "clojuresque",
-                name: "clojuresque-common-runtime",
-                version: props.getProperty("clojuresque.common.version")
         }
     }
 }

@@ -12,99 +12,56 @@ buildscript {
 }
 
 apply plugin: "com.jfrog.bintray"
+apply plugin: "com.gradle.plugin-publish"
 apply plugin: "de.kotka.project"
+apply plugin: "groovy"
+
+group = 'de.kotka.clojuresque'
+version = '1.2.0-SNAPSHOT'
+description = "A Clojure plugin for gradle (common)"
 
 kotka {
     wrapperVersion = "2.7"
+    repository = "clojuresque/common"
+    bintray    = [ repo: "clojuresque" ]
 }
 
-subprojects {
-    group = 'de.kotka.clojuresque'
-    version = '1.2.0-SNAPSHOT'
-
-    apply plugin: "com.jfrog.bintray"
-
-    kotka {
-        repository = "clojuresque/common"
-        bintray    = [ repo: "clojuresque" ]
-    }
-
-    repositories {
-        jcenter()
-    }
+repositories {
+    jcenter()
 }
 
-project(':clojuresque-common') {
-    description = "A Clojure plugin for gradle (common)"
 
-    apply plugin: "com.gradle.plugin-publish"
-    apply plugin: "groovy"
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
 
-    dependencies {
-        compile gradleApi()
-        compile localGroovy()
+    compile "de.kotka.gradle:gradle-utils:0.2.2"
+    compile "us.bpsm:edn-java:0.4.3"
 
-        compile "de.kotka.gradle:gradle-utils:0.2.2"
-        compile "us.bpsm:edn-java:0.4.3"
-
-        testCompile('org.spockframework:spock-core:0.7-groovy-1.8') {
-            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-        }
-    }
-
-    compileJava {
-        sourceCompatibility = "1.6"
-        targetCompatibility = "1.6"
-    }
-
-    compileGroovy {
-        sourceCompatibility = "1.6"
-        targetCompatibility = "1.6"
-    }
-
-    processResources {
-        inputs.property "version", {-> project.version}
-        from(sourceSets.main.resources.srcDirs) {
-            expand("version": project.version)
-        }
-    }
-
-    pluginBundle {
-        website = 'https://bitbucket.org/clojuresque/common'
-        vcsUrl = 'https://bitbucket.org/clojuresque/common'
-        description = project.description
-
-        plugins {
-            commonPlugin {
-                id = 'de.kotka.clojuresque.common'
-                displayName = project.description
-            }
-        }
+    testCompile('org.spockframework:spock-core:0.7-groovy-1.8') {
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
     }
 }
 
-project(':clojuresque-common-runtime') {
-    description = "A Clojure plugin for gradle (common runtime files)"
+compileJava {
+    sourceCompatibility = "1.6"
+    targetCompatibility = "1.6"
+}
 
-    configurations {
-        clojure
-    }
+compileGroovy {
+    sourceCompatibility = "1.6"
+    targetCompatibility = "1.6"
+}
 
-    dependencies {
-        clojure 'org.clojure:clojure:1.5.1'
-    }
+pluginBundle {
+    website = 'https://bitbucket.org/clojuresque/common'
+    vcsUrl = 'https://bitbucket.org/clojuresque/common'
+    description = project.description
 
-    sourceSets.main {
-        compileClasspath =
-            compileClasspath.plus(project.configurations.clojure)
-    }
-
-    compileJava {
-        sourceCompatibility = "1.6"
-        targetCompatibility = "1.6"
-    }
-
-    javadoc {
-        classpath = sourceSets.main.compileClasspath
+    plugins {
+        commonPlugin {
+            id = 'de.kotka.clojuresque.common'
+            displayName = project.description
+        }
     }
 }
