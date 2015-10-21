@@ -44,7 +44,7 @@ project(':clojuresque-common') {
         compile gradleApi()
         compile localGroovy()
 
-        compile "de.kotka.gradle:gradle-utils:0.1.1"
+        compile "de.kotka.gradle:gradle-utils:0.2.2"
         compile "us.bpsm:edn-java:0.4.3"
 
         testCompile('org.spockframework:spock-core:0.7-groovy-1.8') {
